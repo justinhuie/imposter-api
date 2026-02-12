@@ -8,24 +8,24 @@ This API handles game creation, role assignment, reveals, game expiration, and c
 
 ## Features
 
-Create multiplayer games with configurable players and imposters  
-Secure role reveals per player  
-Category-based word selection with optional custom categories  
-Automatic game expiration with periodic cleanup  
-Restart game with identical settings  
-In-memory state optimized for short-lived sessions  
-Mobile-friendly REST API for Expo / React Native clients  
+- Create multiplayer games with configurable players and imposters  
+- Secure role reveals per player  
+- Category-based word selection with optional custom categories  
+- Automatic game expiration with periodic cleanup  
+- Restart game with identical settings  
+- In-memory state optimized for short-lived sessions  
+- Mobile-friendly REST API for Expo / React Native clients  
 
 ---
 
 ## Tech Stack
 
-**Runtime:** Node.js  
-**Framework:** Express (TypeScript)  
-**Deployment:** Fly.io  
-**State Storage:** In-memory (Map-based)  
-**Networking:** RESTful JSON API  
-**CORS:** Configured for mobile + optional web support  
+- **Runtime:** Node.js  
+- **Framework:** Express (TypeScript)  
+- **Deployment:** Fly.io  
+- **State Storage:** In-memory (Map-based)  
+- **Networking:** RESTful JSON API  
+- **CORS:** Configured for mobile + optional web support  
 
 ---
 
