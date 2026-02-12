@@ -12,27 +12,21 @@ const app = express();
 
 const PORT = Number(process.env.PORT ?? 8080);
 
-const GAME_TTL_MS = 45 * 60 * 1000; // 45 minutes
-const CLEANUP_EVERY_MS = 5 * 60 * 1000; // 5 minutes
+const GAME_TTL_MS = 45 * 60 * 1000; 
+const CLEANUP_EVERY_MS = 5 * 60 * 1000; 
 
-// --- middleware (top) ---
 
-// 2) CORS
-// If you are NOT shipping web, leaving this open is fine.
 app.use(
   cors({
     origin: [
       "http://localhost:8081",
       "http://localhost:19006",
-      // add your deployed web domain here if you ship web:
-      // "https://your-web-domain.com",
     ],
   })
 );
 
-app.use(express.json()); // parses JSON bodies
+app.use(express.json()); 
 
-// 1) Gate request logs
 if (process.env.NODE_ENV !== "production") {
   app.use((req, _res, next) => {
     console.log(`${req.method} ${req.path}`);
@@ -40,11 +34,10 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-// --- helpers ---
 function pickUniqueNumbers(count: number, maxInclusive: number): Set<number> {
   const chosen = new Set<number>();
   while (chosen.size < count) {
-    const n = Math.floor(Math.random() * maxInclusive) + 1; // 1..maxInclusive
+    const n = Math.floor(Math.random() * maxInclusive) + 1; 
     chosen.add(n);
   }
   return chosen;
@@ -60,16 +53,13 @@ function cleanupExpiredGames() {
   }
 }
 
-// --- API routes ---
 
-// 5) Health check
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
 app.get("/categories", (_req, res) => {
   res.json(categories.map(({ id, name }) => ({ id, name })));
 });
 
-// Create game
 app.post("/games", (req, res) => {
   const { categoryIds, categoryId, numPlayers, numImposters, hintsEnabled, customCategories } =
     req.body as {
@@ -161,7 +151,6 @@ app.post("/games", (req, res) => {
   res.json({ gameId, numPlayers });
 });
 
-// Reveal
 app.post("/games/:gameId/reveal", (req, res) => {
   const { gameId } = req.params;
   const { playerNumber } = req.body as { playerNumber: number };
@@ -200,12 +189,10 @@ app.get("/games/:gameId/solution", (req, res) => {
   });
 });
 
-// 3) 404 handler (after routes, before error handler)
 app.use((_req, res) => {
   res.status(404).json({ error: "Not found" });
 });
 
-// --- global error handler (MUST be after routes) ---
 app.use((err: any, _req: any, res: any, _next: any) => {
   console.error("Unhandled error:", err);
 
@@ -214,7 +201,6 @@ app.use((err: any, _req: any, res: any, _next: any) => {
   });
 });
 
-// --- start server ---
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on http://0.0.0.0:${PORT}`);
 

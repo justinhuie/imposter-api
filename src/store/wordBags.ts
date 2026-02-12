@@ -2,13 +2,12 @@ import type { WordEntry } from "../data/categories";
 
 type Pool = {
   words: WordEntry[];
-  bag: number[]; // remaining indices
+  bag: number[]; 
 };
 
 const pools = new Map<string, Pool>();
 
 function shuffle<T>(arr: T[]): T[] {
-  // Fisher–Yates
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -23,13 +22,11 @@ function refillBag(n: number) {
 export function registerCategoryWords(categoryId: string, words: WordEntry[]) {
   const existing = pools.get(categoryId);
 
-  // If first time, or word list size changed (custom category edited), reset bag
   if (!existing || existing.words.length !== words.length) {
     pools.set(categoryId, { words, bag: refillBag(words.length) });
     return;
   }
 
-  // Keep existing bag, but update words reference (safe if same length)
   existing.words = words;
 }
 
