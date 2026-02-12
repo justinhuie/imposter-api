@@ -1,24 +1,24 @@
 # Imposter Multiplayer Game API
 
-A production-style backend API powering a real-time party game inspired by social deduction mechanics.
+A backend API powering a party game.
 
-This API handles game creation, role assignment, one-time reveals, game expiration, and category-based word selection. Designed to be fast, stateless, and mobile-friendly.
-
----
-
-## ✨ Features
-
-🎮 Create multiplayer games with configurable players and imposters  
-🕵️ Secure one-time role reveals per player  
-🗂 Category-based word selection with optional custom categories  
-⏱ Automatic game expiration with periodic cleanup  
-🔁 Restart game with identical settings  
-🧠 In-memory state optimized for short-lived sessions  
-🌐 Mobile-friendly REST API for Expo / React Native clients  
+This API handles game creation, role assignment, reveals, game expiration, and category-based word selection.
 
 ---
 
-## 🛠 Tech Stack
+## Features
+
+Create multiplayer games with configurable players and imposters  
+Secure role reveals per player  
+Category-based word selection with optional custom categories  
+Automatic game expiration with periodic cleanup  
+Restart game with identical settings  
+In-memory state optimized for short-lived sessions  
+Mobile-friendly REST API for Expo / React Native clients  
+
+---
+
+## Tech Stack
 
 **Runtime:** Node.js  
 **Framework:** Express (TypeScript)  
@@ -29,12 +29,12 @@ This API handles game creation, role assignment, one-time reveals, game expirati
 
 ---
 
-## 🧠 Architecture Highlights
+## Architecture Highlights
 
-- Stateless HTTP API with ephemeral in-memory game state
+- HTTP API with ephemeral in-memory game state
 - Deterministic role assignment using secure UUIDs
-- One-time reveal enforcement per player
-- Category word bags registered per game for isolation
+- One-time reveal per player
+- Category word bags registered per game
 - Periodic TTL-based cleanup to prevent memory leaks
 - Explicit validation for all incoming requests
 - Health check endpoint for deployment verification
@@ -87,7 +87,7 @@ GET /games/:gameId/solution
 
 ---
 
-## ▶️ Running Locally
+## Running Locally
 
 ```bash
 npm install
@@ -101,7 +101,7 @@ http://localhost:8080
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -120,7 +120,7 @@ src/
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 The API is deployed using **Fly.io**.
 
@@ -132,20 +132,16 @@ The API is deployed using **Fly.io**.
 
 ---
 
-## 📌 Notes
+## Notes
 
 - This API intentionally stores **no persistent data**
-- Designed for short-lived party games
-- Safe to restart at any time
-- No API keys or secrets are required
-- Ideal companion backend for an Expo / React Native frontend
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
-- WebSocket support for real-time game sync
-- Persistent storage (Redis) for horizontal scaling
-- Rate limiting per IP
-- Admin / debug endpoints for moderation
-- Game analytics and telemetry
+- [ ] WebSocket support for real-time game sync
+- [ ] Persistent storage (Redis) for horizontal scaling
+- [ ] Rate limiting per IP
+- [ ] Admin / debug endpoints for moderation
+- [ ] Game analytics and telemetry
