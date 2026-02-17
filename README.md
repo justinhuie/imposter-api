@@ -1,20 +1,17 @@
 # Imposter Multiplayer Game API
 
-A backend API powering a party game.
+This API exists because the mobile app needed a simple way to coordinate games without relying on local state alone. It handles game setup, role assignment, and reveals, but intentionally stays lightweight since most games are short-lived and played in person.
 
-This API handles game creation, role assignment, reveals, game expiration, and category-based word selection.
+There’s no database — everything lives in memory and resets when the server restarts.
 
 ---
 
 ## Features
 
-- Create multiplayer games with configurable players and imposters  
-- Secure role reveals per player  
-- Category-based word selection with optional custom categories  
-- Automatic game expiration with periodic cleanup  
-- Restart game with identical settings  
-- In-memory state optimized for short-lived sessions  
-- Mobile-friendly REST API for Expo / React Native clients  
+- Creating a game with players, imposters, and a category
+- Assigns roles and reveals them one at a time
+- Choosing a word from a category
+- Expiring games automatically so memory does not pile up
 
 ---
 
@@ -29,19 +26,14 @@ This API handles game creation, role assignment, reveals, game expiration, and c
 
 ---
 
-## Architecture Highlights
+## Implementation Notes
 
-- HTTP API with ephemeral in-memory game state
-- Deterministic role assignment using secure UUIDs
-- One-time reveal per player
-- Category word bags registered per game
-- Periodic TTL-based cleanup to prevent memory leaks
-- Explicit validation for all incoming requests
-- Health check endpoint for deployment verification
-
+- Games are stored in memory and keyed by an ID returned at creation time
+- Each reveal request is validated against current game state so players can't reveal twice
+- Because app is usually offline after setup, the API does not try to maintain long-lived sessions
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Health
 ```
@@ -105,17 +97,18 @@ http://localhost:8080
 
 ```
 src/
-├─ data/
-│  └─ categories.ts        # Built-in game categories and word lists
-│
-├─ models/
-│  └─ settings.ts          # Game and settings types
-│
-├─ store/
-│  ├─ games.ts             # In-memory game store
-│  └─ wordBags.ts          # Word bag registration & randomization
-│
-├─ index.ts                # Express app entry point
+  index.ts
+
+  store/
+    games.ts
+    wordBags.ts
+
+  data/
+    categories.ts
+
+  models/
+    settings.ts
+
 ```
 
 ---
@@ -124,24 +117,15 @@ src/
 
 The API is deployed using **Fly.io**.
 
-- Production build uses `npm run build`
-- Runtime executes `node dist/index.js`
-- Includes `/health` endpoint for deployment verification
-- Automatic cleanup runs every 5 minutes
-- Games expire after 45 minutes
-
----
-
-## Notes
-
-- This API intentionally stores **no persistent data**
+- Built with npm run build
+- Runs using `node dist/index.js`
+- Includes `/health` endpoint for basic monitoring
 
 ---
 
 ## Future Improvements
 
-- [ ] WebSocket support for real-time game sync
-- [ ] Persistent storage (Redis) for horizontal scaling
-- [ ] Rate limiting per IP
-- [ ] Admin / debug endpoints for moderation
-- [ ] Game analytics and telemetry
+- WebSocket support for real-time game sync
+- Persistent storage (Redis) for scaling
+- Rate limiting 
+- Admin / debug endpoints
